@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"regexp"
 
 	"github.com/digital-dream-labs/vector-cloud/internal/clad/cloud"
 
@@ -15,6 +16,45 @@ import (
 
 	"github.com/digital-dream-labs/api-clients/chipper"
 )
+
+// rainbow on
+func wire_rainbowon() {
+	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowon").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// rainbow off
+func wire_rainbowoff() {
+	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowoff", "restart").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// die robot, move this to systemctl somehow later
+func wire_dierobot() {
+	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "die", "&").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// changes a config file to allow functionality with prototype chargers
+func wire_protocharger() {
+	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "protocharger", "&").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func wire_escapepodget() {
+	cmdOutput, err := exec.Command("/bin/bash", "/bin/escape-pod-get", "&").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func (strm *Streamer) sendAudio(samples []byte) error {
 	var err error
@@ -147,6 +187,30 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 			log.Println("JSON encode error:", err)
 			receiver.OnError(cloud.ErrorType_Json, err)
 			return
+		}
+	}
+	// kinda copying grant
+	found, _ := regexp.MatchString("rainbow on", resp.QueryText)
+	if found {
+		wire_rainbowon
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	} else {
+		found, _:= regexp.MatchString("rainbow off", resp.QueryText)
+		if found {
+			wire_rainbowoff
+			receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+		} else {
+			found, _:= regexp.MatchString("get escape pod", resp.QueryText)
+			if found {
+				wire_escapepodget
+				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+			} else {
+				found, _:= regexp.MatchString("die robot", resp.QueryText)
+				if found {
+					wire_dierobot
+					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+				}
+			}
 		}
 	}
 
