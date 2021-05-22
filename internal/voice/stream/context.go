@@ -257,6 +257,16 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 					wire_eyecolorred()
 					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 				} else {
+				found, _ := regexp.MatchString("nevermind", resp.QueryText)
+				if found {
+					wire_eyecolorred()
+					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+				} else {
+				found, _ := regexp.MatchString("never mind", resp.QueryText)
+				if found {
+					wire_eyecolorred()
+					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+				} else {
 					found, _ := regexp.MatchString("color to pink", resp.QueryText)
 					if found {
 						wire_eyecolorpink()
@@ -286,6 +296,8 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 			}
 		}
 	}
+}
+}
 }
 
 func sendKGResponse(resp *chipper.KnowledgeGraphResponse, receiver Receiver) {
