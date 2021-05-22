@@ -20,26 +20,26 @@ import (
 
 // rainbow on
 func wire_rainbowon() {
-	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowon").Output()
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowon")
 }
 
 // rainbow off
 func wire_rainbowoff() {
-	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowoff", "restart").Output()
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowoff", "restart")
 }
 
 // die robot, move this to systemctl somehow later
 func wire_dierobot() {
-	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "die", "&").Output()
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "die", "&")
 }
 
 // changes a config file to allow functionality with prototype chargers
 func wire_protocharger() {
-	cmdOutput, err := exec.Command("/bin/bash", "/sbin/vector-ctrl", "protocharger", "&").Output()
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "protocharger", "&")
 }
 
 func wire_escapepodget() {
-	cmdOutput, err := exec.Command("/bin/bash", "/bin/escape-pod-get", "&").Output()
+	cmd := exec.Command("/bin/bash", "/bin/escape-pod-get", "&")
 }
 
 func (strm *Streamer) sendAudio(samples []byte) error {
