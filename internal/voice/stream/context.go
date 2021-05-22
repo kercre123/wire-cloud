@@ -40,9 +40,9 @@ func wire_rainbowoff() {
     fmt.Println(string(stdout))
 }
 
-// die robot, move this to systemctl somehow later
+// die robot
 func wire_dierobot() {
-	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "die", "&")
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "die")
 	stdout, err := cmd.Output()
     if err != nil {
         fmt.Println(err.Error())
@@ -53,7 +53,7 @@ func wire_dierobot() {
 
 // changes a config file to allow functionality with prototype chargers
 func wire_protocharger() {
-	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "protocharger", "&")
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "protocharger")
 	stdout, err := cmd.Output()
     if err != nil {
         fmt.Println(err.Error())
@@ -63,7 +63,7 @@ func wire_protocharger() {
 }
 
 func wire_escapepodget() {
-	cmd := exec.Command("/bin/bash", "/bin/escape-pod-get", "&")
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "escape-pod-get")
 	stdout, err := cmd.Output()
     if err != nil {
         fmt.Println(err.Error())
@@ -225,8 +225,13 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 				if found {
 					wire_dierobot()
 					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
-				} else {
-					receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+				} else
+					found, _:= regexp.MatchString("prototype charger", resp.QueryText)
+					if found {
+						wire_protocharger()
+						receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+					} else {
+							receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
 				}
 			}
 		}
