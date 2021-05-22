@@ -21,25 +21,55 @@ import (
 // rainbow on
 func wire_rainbowon() {
 	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowon")
+	stdout, err := cmd.Output()
+	if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
 }
 
 // rainbow off
 func wire_rainbowoff() {
 	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "rainbowoff", "restart")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
 }
 
 // die robot, move this to systemctl somehow later
 func wire_dierobot() {
 	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "die", "&")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
 }
 
 // changes a config file to allow functionality with prototype chargers
 func wire_protocharger() {
 	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrl", "protocharger", "&")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
 }
 
 func wire_escapepodget() {
 	cmd := exec.Command("/bin/bash", "/bin/escape-pod-get", "&")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
 }
 
 func (strm *Streamer) sendAudio(samples []byte) error {
