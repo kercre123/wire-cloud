@@ -62,8 +62,39 @@ func wire_protocharger() {
     fmt.Println(string(stdout))
 }
 
+// get escape pod
 func wire_escapepodget() {
 	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "escape-pod-get")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
+}
+
+func wire_eyecolorred() {
+	cmd := exec.Command("/bin/bash", "/sbin/eye-colordd", "eye-color-red")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
+}
+
+func wire_eyecolorpink() {
+	cmd := exec.Command("/bin/bash", "/sbin/eye-colordd", "eye-color-pink")
+	stdout, err := cmd.Output()
+    if err != nil {
+        fmt.Println(err.Error())
+        return
+    }
+    fmt.Println(string(stdout))
+}
+
+func wire_eyecolorwhite() {
+	cmd := exec.Command("/bin/bash", "/sbin/eye-colordd", "eye-color-white")
 	stdout, err := cmd.Output()
     if err != nil {
         fmt.Println(err.Error())
@@ -221,22 +252,39 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 				wire_escapepodget()
 				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 			} else {
-				found, _:= regexp.MatchString("die robot", resp.QueryText)
+				found, _:= regexp.MatchString("color to red", resp.QueryText)
 				if found {
-					wire_dierobot()
-					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+					wire_eyecolorred()
+					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 				} else {
-					found, _:= regexp.MatchString("prototype charger", resp.QueryText)
+			found, _:= regexp.MatchString("color to pink", resp.QueryText)
+			if found {
+				wire_eyecolorpink()
+				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+			} else {
+			found, _:= regexp.MatchString("color to white", resp.QueryText)
+			if found {
+				wire_eyecolorwhite()
+				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+			} else {
+					found, _:= regexp.MatchString("die robot", resp.QueryText)
 					if found {
-						wire_protocharger()
+						wire_dierobot()
 						receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
 					} else {
-							receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
-						}
+						found, _:= regexp.MatchString("prototype charger", resp.QueryText)
+						if found {
+							wire_protocharger()
+							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+						} else {
+								receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+							}
 				}
 			}
 		}
 	}
+}
+}
 }
 
 func sendKGResponse(resp *chipper.KnowledgeGraphResponse, receiver Receiver) {
