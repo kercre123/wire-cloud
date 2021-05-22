@@ -225,13 +225,14 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 				if found {
 					wire_dierobot()
 					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
-				} else
+				} else {
 					found, _:= regexp.MatchString("prototype charger", resp.QueryText)
 					if found {
 						wire_protocharger()
 						receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
 					} else {
 							receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+						}
 				}
 			}
 		}
