@@ -1,6 +1,8 @@
 # Vector-cloud
 
 Programs that make Vector talk to the cloud!
+Forked from Digital Dream Lab's vector-cloud
+https://github.com/digital-dream-labs/vector-cloud
 
 ## Building
 
