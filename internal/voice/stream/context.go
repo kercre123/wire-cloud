@@ -257,37 +257,39 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 					wire_eyecolorred()
 					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 				} else {
-				found, _ := regexp.MatchString("nevermind", resp.QueryText)
-				if found {
-					wire_eyecolorred()
-					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-				} else {
-				found, _ := regexp.MatchString("never mind", resp.QueryText)
-				if found {
-					wire_eyecolorred()
-					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-				} else {
-					found, _ := regexp.MatchString("color to pink", resp.QueryText)
+					found, _ := regexp.MatchString("nevermind", resp.QueryText)
 					if found {
-						wire_eyecolorpink()
+						wire_eyecolorred()
 						receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 					} else {
-						found, _ := regexp.MatchString("color to white", resp.QueryText)
+						found, _ := regexp.MatchString("never mind", resp.QueryText)
 						if found {
-							wire_eyecolorwhite()
+							wire_eyecolorred()
 							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 						} else {
-							found, _ := regexp.MatchString("die robot", resp.QueryText)
+							found, _ := regexp.MatchString("color to pink", resp.QueryText)
 							if found {
-								wire_dierobot()
-								receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+								wire_eyecolorpink()
+								receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 							} else {
-								found, _ := regexp.MatchString("prototype charger", resp.QueryText)
+								found, _ := regexp.MatchString("color to white", resp.QueryText)
 								if found {
-									wire_protocharger()
+									wire_eyecolorwhite()
 									receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 								} else {
-									receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+									found, _ := regexp.MatchString("die robot", resp.QueryText)
+									if found {
+										wire_dierobot()
+										receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+									} else {
+										found, _ := regexp.MatchString("prototype charger", resp.QueryText)
+										if found {
+											wire_protocharger()
+											receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+										} else {
+											receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+										}
+									}
 								}
 							}
 						}
@@ -296,8 +298,6 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 			}
 		}
 	}
-}
-}
 }
 
 func sendKGResponse(resp *chipper.KnowledgeGraphResponse, receiver Receiver) {
