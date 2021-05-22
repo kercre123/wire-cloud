@@ -194,29 +194,29 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 	// kinda copying grant
 	found, _ := regexp.MatchString("rainbow on", resp.QueryText)
 	if found {
-		wire_rainbowon
+		wire_rainbowon()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	} else {
 		found, _:= regexp.MatchString("rainbow off", resp.QueryText)
 		if found {
-			wire_rainbowoff
+			wire_rainbowoff()
 			receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 		} else {
 			found, _:= regexp.MatchString("get escape pod", resp.QueryText)
 			if found {
-				wire_escapepodget
+				wire_escapepodget()
 				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 			} else {
 				found, _:= regexp.MatchString("die robot", resp.QueryText)
 				if found {
-					wire_dierobot
+					wire_dierobot()
 					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+				} else {
+					receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
 				}
 			}
 		}
 	}
-
-	receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
 }
 
 func sendKGResponse(resp *chipper.KnowledgeGraphResponse, receiver Receiver) {
