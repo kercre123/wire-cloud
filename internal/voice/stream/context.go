@@ -104,7 +104,7 @@ func wire_eyecolorwhite() {
 }
 
 func wire_lightson() {
-	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "off")
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "om")
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -114,7 +114,7 @@ func wire_lightson() {
 }
 
 func wire_lightsoff() {
-	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "on")
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "off")
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -298,12 +298,12 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 							found, _ := regexp.MatchString("lights off", resp.QueryText)
 							if found {
 								wire_lightsoff()
-								receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_volumedown", Parameters: buf.String(), Metadata: metadata})
+								receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 							} else {
 								found, _ := regexp.MatchString("lights on", resp.QueryText)
 								if found {
 									wire_lightson()
-									receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_volumeup", Parameters: buf.String(), Metadata: metadata})
+									receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 								} else {
 									found, _ := regexp.MatchString("connect to hue", resp.QueryText)
 									if found {
