@@ -104,7 +104,7 @@ func wire_eyecolorwhite() {
 }
 
 func wire_lightson() {
-	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "om")
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "on")
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
