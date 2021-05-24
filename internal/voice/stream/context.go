@@ -103,6 +103,36 @@ func wire_eyecolorwhite() {
 	fmt.Println(string(stdout))
 }
 
+func wire_lightson() {
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "off")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
+}
+
+func wire_lightsoff() {
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "on")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
+}
+
+func wire_lightsconnect() {
+	cmd := exec.Command("/bin/bash", "/sbin/lightcontroldd", "connect")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
+}
+
 func (strm *Streamer) sendAudio(samples []byte) error {
 	var err error
 	sendTime := util.TimeFuncMs(func() {
@@ -264,6 +294,21 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 						found, _ := regexp.MatchString("never mind", resp.QueryText)
 						if found {
 							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_apologize", Parameters: buf.String(), Metadata: metadata})
+						} else {
+						found, _ := regexp.MatchString("lights off", resp.QueryText)
+						if found {
+							wire_lightsoff()
+							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_volumedown", Parameters: buf.String(), Metadata: metadata})
+						} else {
+						found, _ := regexp.MatchString("lights on", resp.QueryText)
+						if found {
+							wire_lightson()
+							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_volumeup", Parameters: buf.String(), Metadata: metadata})
+						} else {
+						found, _ := regexp.MatchString("connect to hue", resp.QueryText)
+						if found {
+							wire_lightsconnect()
+							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 						} else {
 							found, _ := regexp.MatchString("color to pink", resp.QueryText)
 							if found {
