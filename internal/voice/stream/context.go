@@ -342,6 +342,9 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 		}
 	}
 }
+}
+}
+}
 
 func sendKGResponse(resp *chipper.KnowledgeGraphResponse, receiver Receiver) {
 	var buf bytes.Buffer
