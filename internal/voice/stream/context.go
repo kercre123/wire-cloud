@@ -266,83 +266,16 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 			return
 		}
 	}
-	// kinda copying grant
-	found, _ := regexp.MatchString("rainbow on", resp.QueryText)
-	if found {
+
+	switch {
+	default: 
+		receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
+	case regexp.MatchString("rainbow on", resp.QueryText):
 		wire_rainbowon()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-	} else {
-		found, _ := regexp.MatchString("rainbow off", resp.QueryText)
-		if found {
-			wire_rainbowoff()
-			receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-		} else {
-			found, _ := regexp.MatchString("get escape pod", resp.QueryText)
-			if found {
-				wire_escapepodget()
-				receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-			} else {
-				found, _ := regexp.MatchString("color to red", resp.QueryText)
-				if found {
-					wire_eyecolorred()
-					receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-				} else {
-					found, _ := regexp.MatchString("nevermind", resp.QueryText)
-					if found {
-						receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_apologize", Parameters: buf.String(), Metadata: metadata})
-					} else {
-						found, _ := regexp.MatchString("never mind", resp.QueryText)
-						if found {
-							receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_apologize", Parameters: buf.String(), Metadata: metadata})
-						} else {
-							found, _ := regexp.MatchString("lights off", resp.QueryText)
-							if found {
-								wire_lightsoff()
-								receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-							} else {
-								found, _ := regexp.MatchString("lights on", resp.QueryText)
-								if found {
-									wire_lightson()
-									receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-								} else {
-									found, _ := regexp.MatchString("connect to hue", resp.QueryText)
-									if found {
-										wire_lightsconnect()
-										receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-									} else {
-										found, _ := regexp.MatchString("color to pink", resp.QueryText)
-										if found {
-											wire_eyecolorpink()
-											receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-										} else {
-											found, _ := regexp.MatchString("color to white", resp.QueryText)
-											if found {
-												wire_eyecolorwhite()
-												receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-											} else {
-												found, _ := regexp.MatchString("die robot", resp.QueryText)
-												if found {
-													wire_dierobot()
-													receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
-												} else {
-													found, _ := regexp.MatchString("prototype charger", resp.QueryText)
-													if found {
-														wire_protocharger()
-														receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-													} else {
-														receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+	case regexp.MatchString("rainbow off", resp.QueryText):
+		wire_rainbowoff()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	}
 }
 
