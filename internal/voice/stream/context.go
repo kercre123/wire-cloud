@@ -278,6 +278,39 @@ var qText = regexp.MustCompile(resp.QueryText)
 	case qText.MatchString("rainbow off"):
 		wire_rainbowoff()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("get escape pod"):
+		wire_escapepodget()
+	case qText.MatchString("color to red"):
+		wire_eyecolorred()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("color to pink"):
+		wire_eyecolorpink()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("color to white"):
+		wire_eyecolorwhite()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("nevermind"):
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_apologize", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("never mind"):
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_apologize", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("lights off"):
+		wire_lightsoff()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("lights on"):
+		wire_lightson()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("die robot"):
+		wire_dierobot()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_abuse", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("prototype charger"):
+		wire_protocharger()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("robot temperature"):
+		wire_bottemp()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("robot temper"):
+		wire_bottemp()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	}
 }
 
