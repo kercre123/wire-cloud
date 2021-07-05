@@ -267,13 +267,15 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 		}
 	}
 
+var qText = regexp.MustCompile(resp.QueryText)
+
 	switch {
 	default: 
 		receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
-	case _, := regexp.MatchString("rainbow on", resp.QueryText):
+	case qText.MatchString("rainbow on"):
 		wire_rainbowon()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-	case _, := regexp.MatchString("rainbow off", resp.QueryText):
+	case qText.MatchString("rainbow off"):
 		wire_rainbowoff()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	}
