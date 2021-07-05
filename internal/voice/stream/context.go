@@ -270,10 +270,10 @@ func sendIntentResponse(resp *chipper.IntentResult, receiver Receiver) {
 	switch {
 	default: 
 		receiver.OnIntent(&cloud.IntentResult{Intent: resp.Action, Parameters: buf.String(), Metadata: metadata})
-	case := regexp.MatchString("rainbow on", resp.QueryText):
+	case _, := regexp.MatchString("rainbow on", resp.QueryText):
 		wire_rainbowon()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-	case := regexp.MatchString("rainbow off", resp.QueryText):
+	case _, := regexp.MatchString("rainbow off", resp.QueryText):
 		wire_rainbowoff()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	}
