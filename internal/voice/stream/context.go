@@ -133,6 +133,16 @@ func wire_lightsconnect() {
 	fmt.Println(string(stdout))
 }
 
+func wire_bottemp() {
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "bottemp")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
+}
+
 func (strm *Streamer) sendAudio(samples []byte) error {
 	var err error
 	sendTime := util.TimeFuncMs(func() {
