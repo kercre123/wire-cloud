@@ -290,13 +290,13 @@ var qText = regexp.MustCompile(resp.QueryText)
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	case qText.MatchString("get escape pod"):
 		wire_escapepodget()
-	case qText.MatchString("color to red"):
+	case qText.MatchString("set your eye color to red"):
 		wire_eyecolorred()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-	case qText.MatchString("color to pink"):
+	case qText.MatchString("set your eye color to pink"):
 		wire_eyecolorpink()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
-	case qText.MatchString("color to white"):
+	case qText.MatchString("set your eye color to white"):
 		wire_eyecolorwhite()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	case qText.MatchString("nevermind"):
