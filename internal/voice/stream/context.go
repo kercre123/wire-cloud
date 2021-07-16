@@ -143,6 +143,16 @@ func wire_bottemp() {
 	fmt.Println(string(stdout))
 }
 
+func wire_credits() {
+	cmd := exec.Command("/bin/bash", "/sbin/vector-ctrldd", "credits")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
+}
+
 func (strm *Streamer) sendAudio(samples []byte) error {
 	var err error
 	sendTime := util.TimeFuncMs(func() {
@@ -320,6 +330,9 @@ var qText = regexp.MustCompile(resp.QueryText)
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	case qText.MatchString("robot temper"):
 		wire_bottemp()
+		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
+	case qText.MatchString("firmware credits"):
+		wire_credits()
 		receiver.OnIntent(&cloud.IntentResult{Intent: "intent_imperative_praise", Parameters: buf.String(), Metadata: metadata})
 	}
 }
